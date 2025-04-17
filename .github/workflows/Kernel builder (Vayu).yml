@@ -41,8 +41,12 @@ on:
         description: 'Send Notification'
         type: boolean
         default: true
-      ENABLE_KERNELSU:
-        description: 'KernelSU'
+      ENABLE_KERNELSU_NEXT:
+        description: 'KernelSU-Next'
+        type: boolean
+        default: false
+      ENABLE_SUSFS:
+        description: 'SuSFS'
         type: boolean
         default: false
       UPLOAD_TO_RELEASE:
@@ -66,8 +70,9 @@ jobs:
         echo "Codename: ${{ github.event.inputs.CODENAME }}"
         echo "AnyKernel Url: ${{ github.event.inputs.ANYKERNEL_URL }}/tree/${{ github.event.inputs.ANYKERNEL_BRANCH }}"
         echo "Clang Version: ${{ github.event.inputs.CLANG_VERSION }}"
-        echo "Send Notification: ${{ fromJSON('["No", "Yes"]')[fromJSON(github.event.inputs.ENABLE_KERNELSU)] }}
-        echo "KernelSU: ${{ fromJSON('["No", "Yes"]')[fromJSON(github.event.inputs.ENABLE_KERNELSU)] }}
+        echo "Send Notification: ${{ fromJSON('["No", "Yes"]')[fromJSON(github.event.inputs.SEND_NOTIFICATION)] }}
+        echo "KernelSU-Next: ${{ fromJSON('["No", "Yes"]')[fromJSON(github.event.inputs.ENABLE_KERNELSU_NEXT)] }}
+        echo "SuSFS: ${{ fromJSON('["No", "Yes"]')[fromJSON(github.event.inputs.ENABLE_SUSFS)}}
         echo "::endgroup::"
 
     - name: Initialize workspace
@@ -77,7 +82,8 @@ jobs:
 
         echo "workspace-folder=$(pwd)" >> $GITHUB_OUTPUT
         echo "start_time=$(date +%s)" >> $GITHUB_OUTPUT
-        echo "kernelsu=${{ fromJSON('["No", "Yes"]')[fromJSON(github.event.inputs.ENABLE_KERNELSU)] }}" >> $GITHUB_OUTPUT
+        echo "kernelsu=${{ fromJSON('["No", "Yes"]')[fromJSON(github.event.inputs.ENABLE_KERNELSU_NEXT)] }}" >> $GITHUB_OUTPUT
+        echo "susfs=${{ fromJSON('["No", "Yes"]')[fromJSON(github.event.inputs.ENABLE_SUSFS)] }}" >> $GITHUB_OUTPOT
         if [[ -z "${{ github.event.inputs.BUILD_TITLE }}" ]]; then
           echo "build_title=${{ github.event.inputs.CODENAME }}" >> $GITHUB_OUTPUT
         else
@@ -111,7 +117,7 @@ jobs:
       working-directory: ${{ steps.workspace.outputs.workspace-folder }}
       id: kernel
 
-    - name: Adding KernelSU
+    - name: Adding KernelSU-Next and SuSFS 
       if: ${{ steps.workspace.outputs.kernelsu == 'Yes' }}
       run: |
         # Delete old KernelSU
@@ -122,6 +128,7 @@ jobs:
           rm -rf "drivers/kernelsu"
         fi
 
+        if 
         curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
       working-directory: ${{ steps.kernel.outputs.kernel-folder }}
 
