@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       BUILD_TITLE:
-        description: 'Skyline Kernel (PS Edition) Builder'
+        description: 'Vayu Kernel (PS Edition) Builder'
         required: false
       KERNEL_TREE:
         description: 'Kernel Tree'
