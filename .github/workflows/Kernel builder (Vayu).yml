@@ -29,24 +29,19 @@ on:
       CLANG_VERSION:
         type: choice
         description: Clang Version
-        default: 'clang-r510928'
+        default: 'clang-r547379'
         options: 
         - 'clang-3289846'
-        - 'clang-r450784e'
-        - 'clang-r475365b'
-        - 'clang-r487747c'
-        - 'clang-r498229b'
-        - 'clang-r510928'
+        - 'clang-r522817'
+        - 'clang-r530567'
+        - 'clang-r536225'
+        - 'clang-r547379'
       SEND_NOTIFICATION:
         description: 'Send Notification'
         type: boolean
         default: true
       ENABLE_KERNELSU_NEXT:
-        description: 'KernelSU-Next'
-        type: boolean
-        default: false
-      ENABLE_SUSFS:
-        description: 'SuSFS'
+        description: 'KernelSU-Next + SuSFS'
         type: boolean
         default: false
       UPLOAD_TO_RELEASE:
