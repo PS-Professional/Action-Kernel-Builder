@@ -170,6 +170,7 @@ jobs:
 
         cd AnyKernel3
         zip -q -r *
+        ls
         mv $name ../$PSname
         echo "zipname=$name" >> $GITHUB_OUTPUT
       working-directory: ${{ steps.kernel.outputs.kernel-folder }}/out/arch/arm64/boot/
