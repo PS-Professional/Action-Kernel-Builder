@@ -85,7 +85,7 @@ jobs:
           echo "build_title=${{ github.event.inputs.BUILD_TITLE }}" >> $GITHUB_OUTPUT
         fi
 
-        date=$(date +%Y%m%d)
+        echo "DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
       id: workspace
 
     - name: Prepare the build environment
@@ -168,10 +168,10 @@ jobs:
           cp -f dtbo.img AnyKernel3
         fi
 
-        name=PSpro-${{ github.event.inputs.CODENAME }}${{ fromJSON('["", "-KSUN"]')[fromJSON(github.event.inputs.ENABLE_KERNELSU_NEXT)] }}-${ date }.zip
+        name=PSpro-${{ github.event.inputs.CODENAME }}${{ fromJSON('["", "-KSUN"]')[fromJSON(github.event.inputs.ENABLE_KERNELSU_NEXT)] }}-${{ DATE }}.zip
 
         cd AnyKernel3
-        zip -q -r $name *
+        zip -q -r *
         mv $name ../
         echo "zipname=$name" >> $GITHUB_OUTPUT
       working-directory: ${{ steps.kernel.outputs.kernel-folder }}/out/arch/arm64/boot/
@@ -191,8 +191,8 @@ jobs:
           ${{ steps.kernel.outputs.kernel-folder }}/out/arch/arm64/boot/Image
           ${{ steps.kernel.outputs.kernel-folder }}/out/arch/arm64/boot/dtbo.img
           ${{ steps.kernel.outputs.kernel-folder }}/out/arch/arm64/boot/${{ steps.anykernel.outputs.zipname }}
-        name: ${{ github.event.inputs.CODENAME }}-${ date }
-        tag_name: ${ date }
+        name: ${{ github.event.inputs.CODENAME }}-${{ DATE }}
+        tag_name: ${{ DATE }}
         body: |
           <b>${{ steps.workspace.outputs.build_title }}</b>
           <b>Kernel successfully built!</b>, took ${{ steps.build.outputs.elapsed_time }} seconds.
