@@ -5,14 +5,15 @@ on:
     inputs:
       BUILD_TITLE:
         description: 'Vayu Kernel (PS Edition) Builder'
+        default: 'Vayu Kernel build by PS-Professional'
         required: false
       KERNEL_TREE:
         description: 'Kernel Tree'
-        default: 'https://github.com/PS-Professional/platform_kernel_xiaomi_vayu'
+        default: 'https://github.com/PS-Professional/Xiaomi_Kernel_OpenSource'
         required: true
       KERNEL_TREE_BRANCH:
         description: 'Kernel Tree Branch'
-        default: 'main'
+        default: 'vayu-r-oss'
         required: true
       CODENAME:
         description: 'Phone Codename'
@@ -43,7 +44,7 @@ on:
       ENABLE_KERNELSU_NEXT:
         description: 'KernelSU-Next'
         type: boolean
-        default: false
+        default: true
       UPLOAD_TO_RELEASE:
         description: 'Upload to release'
         type: boolean
@@ -187,8 +188,8 @@ jobs:
           ${{ steps.kernel.outputs.kernel-folder }}/out/arch/arm64/boot/Image
           ${{ steps.kernel.outputs.kernel-folder }}/out/arch/arm64/boot/dtbo.img
           ${{ steps.kernel.outputs.kernel-folder }}/out/arch/arm64/boot/${{ steps.anykernel.outputs.zipname }}
-        name: ${{ github.event.inputs.CODENAME }}-${{ github.run_id }}
-        tag_name: ${{ github.run_id }}
+        name: ${{ github.event.inputs.CODENAME }}-${echo "$(date %Y%m%d)"}
+        tag_name: ${echo "$(date %Y%m%d)"}
         body: |
           <b>${{ steps.workspace.outputs.build_title }}</b>
           <b>Kernel successfully built!</b>, took ${{ steps.build.outputs.elapsed_time }} seconds.
