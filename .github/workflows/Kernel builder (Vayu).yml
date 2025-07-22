@@ -41,7 +41,7 @@ on:
         description: 'Send Notification'
         type: boolean
         default: true
-      ENABLE_KERNELSU_NEXT:
+      ENABLE_KERNELSU:
         description: 'KernelSU-Next'
         type: boolean
         default: true
@@ -67,7 +67,7 @@ jobs:
         echo "AnyKernel Url: ${{ github.event.inputs.ANYKERNEL_URL }}/tree/${{ github.event.inputs.ANYKERNEL_BRANCH }}"
         echo "Clang Version: ${{ github.event.inputs.CLANG_VERSION }}"
         echo "Send Notification: ${{ fromJSON('["No", "Yes"]')[fromJSON(github.event.inputs.SEND_NOTIFICATION)] }}
-        echo "KernelSU-Next: ${{ fromJSON('["No", "Yes"]')[fromJSON(github.event.inputs.ENABLE_KERNELSU_NEXT)] }}
+        echo "KernelSU-Next: ${{ fromJSON('["No", "Yes"]')[fromJSON(github.event.inputs.ENABLE_KERNELSU)] }}
         echo "Date: $(date +%Y%m%d)"
         echo "::endgroup::"
 
@@ -78,7 +78,7 @@ jobs:
 
         echo "workspace-folder=$(pwd)" >> $GITHUB_OUTPUT
         echo "start_time=$(date +%s)" >> $GITHUB_OUTPUT
-        echo "kernelsu=${{ fromJSON('["No", "Yes"]')[fromJSON(github.event.inputs.ENABLE_KERNELSU_NEXT)] }}" >> $GITHUB_OUTPUT
+        echo "kernelsu=${{ fromJSON('["No", "Yes"]')[fromJSON(github.event.inputs.ENABLE_KERNELSU)] }}" >> $GITHUB_OUTPUT
         if [[ -z "${{ github.event.inputs.BUILD_TITLE }}" ]]; then
           echo "build_title=${{ github.event.inputs.CODENAME }}" >> $GITHUB_OUTPUT
         else
@@ -112,7 +112,7 @@ jobs:
       working-directory: ${{ steps.workspace.outputs.workspace-folder }}
       id: kernel
 
-    - name: Adding KernelSU-Next and SuSFS 
+    - name: Adding KernelSU-Next
       if: ${{ steps.workspace.outputs.kernelsu == 'Yes' }}
       run: |
         # Delete old KernelSU
@@ -168,7 +168,7 @@ jobs:
           cp -f dtbo.img AnyKernel3
         fi
 
-        name=PSpro-${{ github.event.inputs.CODENAME }}${{ fromJSON('["", "-KSUN"]')[fromJSON(github.event.inputs.ENABLE_KERNELSU)] }}-${{ date }}.zip
+        name=PSpro-${{ github.event.inputs.CODENAME }}${{ fromJSON('["", "-KSUN"]')[fromJSON(github.event.inputs.ENABLE_KERNELSU_NEXT)] }}-${{ date }}.zip
 
         cd AnyKernel3
         zip -q -r $name *
