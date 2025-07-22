@@ -20,7 +20,7 @@ on:
         default: 'vayu_user'
         required: true
       ANYKERNEL_URL:
-        description: 'AnyKernel Url (leave blank if you dont want AnyKernel)'
+        description: 'AnyKernel URL (leave blank if you dont want AnyKernel)'
         default: 'https://github.com/PS-Professional/AnyKernel3'
         required: false
       ANYKERNEL_BRANCH:
@@ -165,7 +165,7 @@ jobs:
           cp -f dtbo.img AnyKernel3
         fi
 
-        name=PSpro-${{ github.event.inputs.CODENAME }}${{ fromJSON('["", "-KSUN"]')[fromJSON(github.event.inputs.ENABLE_KERNELSU_NEXT)] }}.zip
+        name=PSpro-${{ github.event.inputs.CODENAME }}${{ fromJSON('["", "-KSUN"]')[fromJSON(github.event.inputs.ENABLE_KERNELSU)] }}.zip
 
         cd AnyKernel3
         zip -q -r *
