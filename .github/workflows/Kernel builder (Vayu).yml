@@ -41,7 +41,7 @@ on:
         type: boolean
         default: true
       ENABLE_KERNELSU_NEXT:
-        description: 'KernelSU-Next + SuSFS'
+        description: 'KernelSU-Next'
         type: boolean
         default: false
       UPLOAD_TO_RELEASE:
@@ -67,7 +67,6 @@ jobs:
         echo "Clang Version: ${{ github.event.inputs.CLANG_VERSION }}"
         echo "Send Notification: ${{ fromJSON('["No", "Yes"]')[fromJSON(github.event.inputs.SEND_NOTIFICATION)] }}
         echo "KernelSU-Next: ${{ fromJSON('["No", "Yes"]')[fromJSON(github.event.inputs.ENABLE_KERNELSU_NEXT)] }}
-        echo "SuSFS: ${{ fromJSON('["No", "Yes"]')[fromJSON(github.event.inputs.ENABLE_SUSFS)}}
         echo "::endgroup::"
 
     - name: Initialize workspace
@@ -78,7 +77,6 @@ jobs:
         echo "workspace-folder=$(pwd)" >> $GITHUB_OUTPUT
         echo "start_time=$(date +%s)" >> $GITHUB_OUTPUT
         echo "kernelsu=${{ fromJSON('["No", "Yes"]')[fromJSON(github.event.inputs.ENABLE_KERNELSU_NEXT)] }}" >> $GITHUB_OUTPUT
-        echo "susfs=${{ fromJSON('["No", "Yes"]')[fromJSON(github.event.inputs.ENABLE_SUSFS)] }}" >> $GITHUB_OUTPOT
         if [[ -z "${{ github.event.inputs.BUILD_TITLE }}" ]]; then
           echo "build_title=${{ github.event.inputs.CODENAME }}" >> $GITHUB_OUTPUT
         else
@@ -122,9 +120,8 @@ jobs:
         if [ -d "drivers/kernelsu" ]; then
           rm -rf "drivers/kernelsu"
         fi
-
-        if 
-        curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
+        
+        curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -
       working-directory: ${{ steps.kernel.outputs.kernel-folder }}
 
     - name: Building kernel
