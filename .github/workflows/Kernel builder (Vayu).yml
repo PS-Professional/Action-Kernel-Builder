@@ -164,12 +164,13 @@ jobs:
         if [ -e "dtbo.img" ]; then
           cp -f dtbo.img AnyKernel3
         fi
-
-        name=PSpro-${{ github.event.inputs.CODENAME }}${{ fromJSON('["", "-KSUN"]')[fromJSON(github.event.inputs.ENABLE_KERNELSU)] }}.zip
+        
+        name=FlashableKernel-${{ github.event.inputs.CODENAME }}${{ fromJSON('["", "-KSU"]')[fromJSON(github.event.inputs.ENABLE_KERNELSU)] }}.zip
+        PSname=PSpro-${{ github.event.inputs.CODENAME }}${{ fromJSON('["", "-KSUN"]')[fromJSON(github.event.inputs.ENABLE_KERNELSU)] }}.zip
 
         cd AnyKernel3
         zip -q -r *
-        mv $name ../
+        mv $name ../$PSname
         echo "zipname=$name" >> $GITHUB_OUTPUT
       working-directory: ${{ steps.kernel.outputs.kernel-folder }}/out/arch/arm64/boot/
       id: anykernel
