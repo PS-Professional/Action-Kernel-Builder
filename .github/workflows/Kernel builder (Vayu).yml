@@ -1,4 +1,4 @@
-name: Kernel Build (vayu) by PS-Professiona
+name: Kernel Build (vayu) by PS-Professional
 
 on:
   workflow_dispatch:
